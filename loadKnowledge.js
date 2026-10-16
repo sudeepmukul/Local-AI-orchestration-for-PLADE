@@ -8,7 +8,7 @@ async function loadKnowledge() {
 
   for (const doc of docs) {
     await addKnowledge(doc);
-    console.log("✅ Loaded:", doc.slice(0, 40));
+    console.log(" Loaded:", doc.slice(0, 40));
   }
 }
 

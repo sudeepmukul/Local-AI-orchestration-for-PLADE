@@ -99,7 +99,7 @@ app.post("/evaluate", async (req, res) => {
     res.send(`Result: ${result}\nReason: ${reason}\nDamage: ${damage}`);
 
   } catch (err) {
-    console.log("🔥 ERROR:", err.message);
+    console.log(" ERROR:", err.message);
     res.send("Result: wrong\nReason: Server error");
   }
 });
@@ -122,7 +122,7 @@ Rules:
 - DO NOT give full solution
 - Only give hint
 - Keep it short
-
+    
 Knowledge:
 ${context}
 
@@ -146,7 +146,7 @@ ${code}
     res.send("Hint: " + answer.trim());
 
   } catch (err) {
-    console.log("🔥 ERROR:", err.message);
+    console.log(" ERROR:", err.message);
     res.send("Hint: Try checking your loop or list.");
   }
 });
@@ -210,5 +210,5 @@ app.get("/test", async (req, res) => {
 
 /* ---------------- START ---------------- */
 app.listen(3000, () => {
-  console.log("🚀 Server running on http://localhost:3000");
+  console.log("lol Server running on http://localhost:3000");
 });
