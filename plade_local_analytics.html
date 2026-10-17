@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PLADE // Player HQ</title>
+<style>
+:root{
+  --bg:#0b0e16;--bg2:#111725;--panel:#141b2a;--panel2:#192235;--line:#303c54;
+  --ink:#f3f5ff;--muted:#8c9ab5;--mint:#9cff57;--cyan:#61e7f5;--violet:#b39aff;
+  --gold:#ffd166;--pink:#ff7799;--shadow:#05070d;--pixel:3px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background-color:var(--bg);background-image:linear-gradient(#ffffff05 1px,transparent 1px),linear-gradient(90deg,#ffffff05 1px,transparent 1px);background-size:24px 24px;color:var(--ink);font:14px/1.5 "Courier New",monospace}
+button,select{font:inherit}
+button{cursor:pointer}
+.wrap{width:min(1240px,100%);margin:auto;padding:24px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:13px}
+.brand-mark{width:48px;height:48px;display:grid;place-items:center;background:var(--mint);color:#11170c;font-weight:1000;font-size:25px;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--shadow);transform:rotate(-2deg)}
+.kicker{font-size:10px;font-weight:bold;letter-spacing:2px;color:var(--mint);text-transform:uppercase}
+h1{font-size:clamp(21px,3vw,30px);line-height:1.15;letter-spacing:-1px;margin:3px 0 4px;font-weight:900;text-transform:uppercase}
+.sub{font-size:11px;color:var(--muted)}
+.top-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.status{border:2px solid #38563b;background:#122016;color:var(--mint);padding:7px 9px;font-size:10px;font-weight:bold;letter-spacing:.5px;white-space:nowrap}
+.status:before{content:"";display:inline-block;width:7px;height:7px;background:currentColor;margin-right:7px;box-shadow:2px 2px 0 #000}
+.status.sample{color:var(--gold);border-color:#5a4b2b;background:#211c12}
+.btn{border:2px solid var(--line);background:var(--panel2);color:var(--ink);padding:9px 12px;font-weight:bold;font-size:11px;box-shadow:3px 3px 0 var(--shadow);transition:transform .12s,border-color .12s,box-shadow .12s}
+.btn:hover{border-color:var(--mint);transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--shadow)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--shadow)}
+.btn:disabled{opacity:.6;cursor:wait}
+.hero{display:grid;grid-template-columns:1.45fr .8fr;gap:14px;margin-bottom:14px}
+.hero-main,.hero-side,.card,.metric{background:var(--panel);border:2px solid var(--line);box-shadow:4px 4px 0 var(--shadow)}
+.hero-main{padding:20px;position:relative;overflow:hidden;min-height:145px}
+.hero-main:after{content:"";position:absolute;width:140px;height:140px;right:20px;bottom:-55px;border:13px solid #9cff5710;transform:rotate(45deg);pointer-events:none}
+.hero-tag{display:inline-block;background:var(--mint);color:#10170a;padding:4px 7px;font-size:10px;font-weight:bold;margin-bottom:11px}
+.hero-title{font-size:clamp(20px,3vw,29px);font-weight:900;line-height:1.22;text-transform:uppercase;max-width:650px}
+.hero-title .accent{color:var(--mint)}
+.hero-copy{font-size:11px;color:var(--muted);margin-top:8px;max-width:580px}
+.hero-side{padding:17px;display:flex;align-items:center;gap:14px;background:var(--panel2)}
+.pixel-mascot{width:70px;height:70px;flex-shrink:0;position:relative;image-rendering:pixelated}
+.pixel-mascot .head{position:absolute;left:17px;top:8px;width:38px;height:35px;background:var(--gold);border:4px solid #0a0d14;box-shadow:0 -7px 0 -1px var(--gold),-7px 0 0 -1px var(--gold),7px 0 0 -1px var(--gold)}
+.pixel-mascot .eye{position:absolute;top:18px;left:25px;width:6px;height:8px;background:#0b0e16;box-shadow:16px 0 0 #0b0e16}
+.pixel-mascot .body{position:absolute;top:43px;left:19px;width:34px;height:20px;background:var(--violet);border:4px solid #0a0d14;box-shadow:-6px 0 0 -2px var(--violet),6px 0 0 -2px var(--violet)}
+.hero-side .label{font-size:10px;color:var(--muted);letter-spacing:1px}
+.hero-side .level{font-size:24px;line-height:1.3;font-weight:900;color:var(--gold)}
+.xp-track{height:10px;border:2px solid #3a465e;background:#0a0e17;padding:1px;margin-top:7px}
+.xp-fill{height:100%;width:72%;background:repeating-linear-gradient(90deg,var(--mint) 0 10px,#71c93d 10px 12px)}
+.section-label{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin:22px 0 11px;font-weight:bold}
+.section-label:after{content:"";height:2px;background:#283249;flex:1}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}
+.metric{padding:15px 16px;min-width:0;position:relative;transition:transform .15s,border-color .15s}
+.metric:hover{transform:translateY(-3px);border-color:#66758e}
+.metric-top{display:flex;justify-content:space-between;align-items:center;gap:6px;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+.metric-icon{font-size:16px;color:var(--mint)}
+.metric-value{font-size:clamp(23px,3vw,32px);font-weight:900;letter-spacing:-1px;margin:9px 0 3px;overflow:hidden;text-overflow:ellipsis}
+.metric-note{font-size:10px;color:var(--muted)}
+.metric-note strong{color:var(--mint);font-weight:bold}
+.columns{display:grid;grid-template-columns:1.1fr 1fr;gap:14px;margin-bottom:14px}
+.card{padding:17px;min-width:0}
+.cardhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px}
+.cardtitle{font-weight:900;text-transform:uppercase;font-size:13px;letter-spacing:.3px}
+.carddesc{font-size:10px;color:var(--muted);margin-top:4px}
+.chip{font-size:9px;color:var(--cyan);border:1px solid #31515a;padding:4px 6px;white-space:nowrap}
+.breakdown{display:grid;gap:17px;padding:7px 0}
+.breakdown-head{display:flex;justify-content:space-between;gap:10px;font-size:11px;margin-bottom:7px}
+.breakdown-head span:last-child{font-weight:bold}
+.bar-track{height:14px;background:#090c13;border:2px solid #35415a;padding:1px}
+.bar-fill{height:100%;width:0;transition:width .5s steps(15);background:repeating-linear-gradient(90deg,var(--mint) 0 11px,#6fbe3b 11px 13px)}
+.bar-fill.wrong{background:repeating-linear-gradient(90deg,var(--violet) 0 11px,#8067d1 11px 13px)}
+.chart-foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:18px;padding-top:12px;border-top:1px dashed #35415a;font-size:10px;color:var(--muted)}
+.map-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.map-card{border:2px solid #334058;background:#101624;padding:11px 8px 9px;text-align:left;color:var(--ink);min-width:0;box-shadow:2px 2px 0 var(--shadow);transition:transform .12s,border-color .12s,background .12s}
+.map-card:hover{transform:translateY(-3px);border-color:var(--cyan)}
+.map-card.active{border-color:var(--mint);background:#1a2a20;box-shadow:3px 3px 0 #05070d}
+.map-art{display:grid;place-items:center;height:42px;font-size:22px;margin-bottom:8px;filter:saturate(.9)}
+.map-name{font-size:10px;font-weight:bold;text-transform:uppercase;overflow-wrap:anywhere}
+.map-count{font-size:9px;color:var(--muted);margin-top:6px}
+.map-mini{display:flex;gap:2px;margin-top:8px}
+.map-mini i{display:block;height:5px;flex:1;background:#2c384e}
+.map-mini i.on{background:var(--cyan)}
+.map-card.active .map-mini i.on{background:var(--mint)}
+.leaderboard{margin-bottom:14px}
+.filters{display:flex;gap:6px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+.filter{border:2px solid #303c54;background:#101624;color:var(--muted);padding:7px 9px;font-size:10px;font-weight:bold}
+.filter.active,.filter:hover{border-color:var(--mint);color:var(--mint);background:#19251a}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;white-space:nowrap}
+thead{background:#0c111c}
+th{text-align:left;padding:10px 9px;font-size:9px;letter-spacing:1px;color:#8492aa;border-bottom:2px solid #303c54}
+td{padding:11px 9px;border-bottom:1px solid #283248;font-size:11px}
+tbody tr{transition:background .12s;cursor:pointer}
+tbody tr:hover{background:#1b2638}
+tbody tr:last-child td{border-bottom:0}
+.rank{width:40px;color:var(--muted);font-weight:bold}
+.rank.top1{color:var(--gold)}
+.player{display:flex;align-items:center;gap:9px;font-weight:bold}
+.avatar{width:31px;height:31px;display:grid;place-items:center;border:2px solid #566480;background:#26334a;color:var(--ink);font-size:10px;font-weight:bold;flex-shrink:0;box-shadow:2px 2px 0 #070911}
+.avatar.green{background:#233b26;border-color:#648a4d}.avatar.purple{background:#34294b;border-color:#7a65a8}.avatar.orange{background:#483321;border-color:#ac7a48}.avatar.blue{background:#203948;border-color:#4d879a}
+.points{color:var(--mint);font-weight:900}
+.tag{display:inline-block;padding:4px 6px;font-size:9px;font-weight:bold;border:1px solid #355b3c;color:var(--mint);background:#18271b}
+.tag.sample{border-color:#5d4b2b;color:var(--gold);background:#2b2314}
+.tag.mid{border-color:#53426e;color:var(--violet);background:#211b31}
+.sample-note{font-size:10px;color:var(--muted);margin-top:10px}
+.lower{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.skill{margin:14px 0}
+.skill-top{display:flex;justify-content:space-between;gap:8px;font-size:10px;margin-bottom:7px}
+.skill-top span:last-child{color:var(--muted)}
+.skill-track{height:10px;border:2px solid #344159;background:#0a0e16;padding:1px}
+.skill-fill{height:100%;background:repeating-linear-gradient(90deg,var(--violet) 0 9px,#8169d5 9px 11px)}
+.quest{display:flex;gap:11px;padding:11px 0;border-bottom:1px dashed #303c54;align-items:flex-start}
+.quest:last-child{border-bottom:0}
+.quest-icon{width:32px;height:32px;display:grid;place-items:center;flex-shrink:0;border:2px solid #3b4b60;background:#101624;font-size:15px}
+.quest-name{font-size:11px;font-weight:bold}
+.quest-desc{font-size:10px;color:var(--muted);margin-top:3px}
+.quest-xp{margin-left:auto;color:var(--gold);font-size:10px;white-space:nowrap}
+.footer{display:flex;justify-content:space-between;gap:12px;color:#64728a;font-size:9px;padding:14px 1px 4px;flex-wrap:wrap}
+.toast{position:fixed;bottom:18px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--mint);color:#10170a;padding:11px 16px;border:2px solid #d6ffb5;box-shadow:4px 4px 0 #000;font-size:11px;font-weight:bold;z-index:20;transition:opacity .15s,transform .15s;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.modal-backdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:#05070dcc;z-index:30}
+.modal-backdrop.show{display:flex}
+.modal{width:min(420px,100%);background:var(--panel);border:3px solid var(--mint);box-shadow:7px 7px 0 #020307;padding:20px}
+.modal-head{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.modal-title{font-size:15px;text-transform:uppercase;font-weight:900}
+.modal-close{border:2px solid var(--line);background:#101624;color:var(--ink);padding:4px 8px}
+.modal-person{display:flex;gap:13px;align-items:center;margin:18px 0}
+.modal-avatar{width:56px;height:56px;font-size:20px}
+.modal-name{font-size:17px;font-weight:bold}
+.modal-sub{font-size:10px;color:var(--muted);margin-top:4px}
+.modal-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.modal-stat{background:#0e1420;border:1px solid #35415a;padding:10px}
+.modal-stat b{display:block;font-size:17px;color:var(--mint)}
+.modal-stat span{font-size:9px;color:var(--muted);text-transform:uppercase}
+.modal-hint{color:var(--muted);font-size:10px;margin-top:15px}
+.muted{color:var(--muted)}
+@media(max-width:900px){.wrap{padding:16px}.hero{grid-template-columns:1fr}.hero-side{min-height:105px}.columns{grid-template-columns:1fr}.map-grid{grid-template-columns:repeat(5,minmax(110px,1fr));overflow-x:auto;padding-bottom:5px}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.top{align-items:flex-start;flex-direction:column}.top-actions{justify-content:flex-start}.hero-main{padding:16px}.metrics{gap:8px}.metric{padding:12px}.metric-value{font-size:25px}.lower{grid-template-columns:1fr}.filters{justify-content:flex-start}.map-grid{grid-template-columns:repeat(5,105px)}.card{padding:13px}.hero-side{padding:13px}.footer{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="brand-mark">P!</div>
+      <div>
+        <div class="kicker">PLADE / PLAYER HQ</div>
+        <h1>Player control room</h1>
+        <div class="sub">Your code. Your stats. Your next level.</div>
+      </div>
+    </div>
+    <div class="top-actions">
+      <span class="status sample" id="apiStatus">CONNECTING</span>
+      <button class="btn" id="refreshBtn" type="button">↻ SYNC DATA</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-main">
+      <span class="hero-tag">▸ MISSION CONTROL</span>
+      <div class="hero-title">Every bug beaten is<br><span class="accent">another level unlocked.</span></div>
+      <div class="hero-copy" id="heroCopy">Track your coding runs, compare Zen Points, and see which map needs a little more practice.</div>
+    </div>
+    <div class="hero-side">
+      <div class="pixel-mascot" aria-hidden="true"><div class="head"></div><div class="eye"></div><div class="body"></div></div>
+      <div style="flex:1;min-width:0">
+        <div class="label">PLAYER RANK</div>
+        <div class="level" id="playerLevel">LVL 04</div>
+        <div class="sub" id="xpLabel">Demo profile · 720 / 1000 XP</div>
+        <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-label">▦ Save file statistics <span class="muted">/ ALL TIME</span></div>
+  <section class="metrics">
+    <div class="metric"><div class="metric-top">Total players <span class="metric-icon">♟</span></div><div class="metric-value" id="players">248</div><div class="metric-note" id="playersNote"><strong>●</strong> player profiles</div></div>
+    <div class="metric"><div class="metric-top">Code submissions <span class="metric-icon">⌘</span></div><div class="metric-value" id="submissions">1,842</div><div class="metric-note" id="submissionsNote">All-time attempts</div></div>
+    <div class="metric"><div class="metric-top">Challenges solved <span class="metric-icon">✦</span></div><div class="metric-value" id="solved">1,126</div><div class="metric-note" id="solvedNote">Correct submissions</div></div>
+    <div class="metric"><div class="metric-top">Success rate <span class="metric-icon">◈</span></div><div class="metric-value" id="rate">68.4%</div><div class="metric-note" id="rateNote">Correct / total attempts</div></div>
+  </section>
+
+  <section class="columns">
+    <div class="card">
+      <div class="cardhead">
+        <div><div class="cardtitle">▣ All-time run stats</div><div class="carddesc">Successful vs failed code submissions</div></div>
+        <span class="chip">NO DAILY GUESSWORK</span>
+      </div>
+      <div class="breakdown">
+        <div><div class="breakdown-head"><span>✓ QUEST CLEARED</span><span id="correctValue">1,126</span></div><div class="bar-track"><div class="bar-fill" id="correctBar" style="width:61%"></div></div></div>
+        <div><div class="breakdown-head"><span>× TRY AGAIN</span><span id="wrongValue">516</span></div><div class="bar-track"><div class="bar-fill wrong" id="wrongBar" style="width:28%"></div></div></div>
+      </div>
+      <div class="chart-foot"><span>◼ <span id="totalFoot">1,642</span> recorded attempts</span><span class="muted">ALL-TIME TOTALS</span></div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div><div class="cardtitle">▦ Challenges by map</div><div class="carddesc" id="mapDesc">Pick a map to filter the leaderboard</div></div><span class="chip">SELECT MAP</span></div>
+      <div class="map-grid" id="mapGrid">
+        <button class="map-card active" data-map="all"><div class="map-art">🕹️</div><div class="map-name">All Maps</div><div class="map-count">Overview</div><div class="map-mini"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></button>
+        <button class="map-card" data-map="python"><div class="map-art">🐍</div><div class="map-name">Python</div><div class="map-count">42 cleared</div><div class="map-mini"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></button>
+        <button class="map-card" data-map="logic"><div class="map-art">🧩</div><div class="map-name">Logic</div><div class="map-count">35 cleared</div><div class="map-mini"><i class="on"></i><i class="on"></i><i></i><i></i></div></button>
+        <button class="map-card" data-map="loops"><div class="map-art">🔁</div><div class="map-name">Loops</div><div class="map-count">28 cleared</div><div class="map-mini"><i class="on"></i><i class="on"></i><i></i><i></i></div></button>
+        <button class="map-card" data-map="arrays"><div class="map-art">📦</div><div class="map-name">Arrays</div><div class="map-count">19 cleared</div><div class="map-mini"><i class="on"></i><i></i><i></i><i></i></div></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card leaderboard">
+    <div class="cardhead">
+      <div><div class="cardtitle">♛ Hall of coders</div><div class="carddesc" id="leaderDesc">Click a player row to inspect their stats</div></div>
+      <div class="filters" id="filters">
+        <button class="filter active" data-filter="all">ALL</button>
+        <button class="filter" data-filter="python">PYTHON</button>
+        <button class="filter" data-filter="logic">LOGIC</button>
+        <button class="filter" data-filter="loops">LOOPS</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>RANK</th><th>CODER</th><th>MAP</th><th>CLEARED</th><th>STREAK</th><th>ZEN POINTS</th><th>TYPE</th></tr></thead>
+        <tbody id="leaderboard"><tr><td colspan="7" class="muted">Loading players...</td></tr></tbody>
+      </table>
+    </div>
+    <div class="sample-note" id="sampleNote">Sample players are marked DEMO. They are not inserted into your Prisma database.</div>
+  </section>
+
+  <section class="lower">
+    <div class="card">
+      <div class="cardhead"><div><div class="cardtitle">▤ Skill tree</div><div class="carddesc">Illustrative progress until topic-level tracking is added</div></div><span class="chip">DEMO XP</span></div>
+      <div class="skill"><div class="skill-top"><span>Loops & iteration</span><span>82%</span></div><div class="skill-track"><div class="skill-fill" style="width:82%"></div></div></div>
+      <div class="skill"><div class="skill-top"><span>Conditionals</span><span>74%</span></div><div class="skill-track"><div class="skill-fill" style="width:74%"></div></div></div>
+      <div class="skill"><div class="skill-top"><span>Lists & arrays</span><span>61%</span></div><div class="skill-track"><div class="skill-fill" style="width:61%"></div></div></div>
+      <div class="skill"><div class="skill-top"><span>Functions</span><span>48%</span></div><div class="skill-track"><div class="skill-fill" style="width:48%"></div></div></div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div><div class="cardtitle">☷ Quest log</div><div class="carddesc">Small sample feed for the prototype</div></div><span class="chip">PLACEHOLDERS</span></div>
+      <div class="quest"><div class="quest-icon">✦</div><div><div class="quest-name">Rohit cleared Loop Runner</div><div class="quest-desc">Python map · clean run</div></div><div class="quest-xp">+100 XP</div></div>
+      <div class="quest"><div class="quest-icon">⌘</div><div><div class="quest-name">Sayoni submitted a solution</div><div class="quest-desc">Logic map · keep the streak alive</div></div><div class="quest-xp">+50 XP</div></div>
+      <div class="quest"><div class="quest-icon">⚡</div><div><div class="quest-name">Abhinay is back for another run</div><div class="quest-desc">Python map · practice attempt</div></div><div class="quest-xp">+20 XP</div></div>
+      <div class="quest"><div class="quest-icon">★</div><div><div class="quest-name">Manus unlocked a 6-win streak</div><div class="quest-desc">Loops map · demo event</div></div><div class="quest-xp">+150 XP</div></div>
+    </div>
+  </section>
+  <footer class="footer"><span>PLADE PLAYER HQ · LOCAL PROTOTYPE</span><span>SQLite via Prisma API · sample records are visual placeholders</span></footer>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="modal-backdrop" id="playerModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title" id="modalTitle">PLAYER CARD</div><button class="modal-close" id="modalClose" aria-label="Close">✕</button></div>
+    <div class="modal-person"><div class="avatar modal-avatar" id="modalAvatar">RH</div><div><div class="modal-name" id="modalName">Rohit</div><div class="modal-sub" id="modalMap">Python · DEMO PROFILE</div></div></div>
+    <div class="modal-stats">
+      <div class="modal-stat"><b id="modalPoints">4,200</b><span>Zen Points</span></div>
+      <div class="modal-stat"><b id="modalSolved">42</b><span>Cleared</span></div>
+      <div class="modal-stat"><b id="modalStreak">5</b><span>Win streak</span></div>
+    </div>
+    <div class="modal-hint" id="modalHint">Demo player card. Sample data is only used to make the interface previewable.</div>
+  </div>
+</div>
+
+<script>
+const API_BASE = "http://localhost:3000";
+const DEMO_METRICS = {totalPlayers:248,totalAttempts:1842,correctAttempts:1126,wrongAttempts:716,successRate:"61.1%"};
+const DEMO_MAPS = [
+  {mapName:"python",totalSolved:42,icon:"🐍",description:"Python"},
+  {mapName:"logic",totalSolved:35,icon:"🧩",description:"Logic"},
+  {mapName:"loops",totalSolved:28,icon:"🔁",description:"Loops"},
+  {mapName:"arrays",totalSolved:19,icon:"📦",description:"Arrays"},
+  {mapName:"functions",totalSolved:13,icon:"⚙️",description:"Functions"}
+];
+const DEMO_PLAYERS = [
+  {playerName:"Rohit",mapName:"python",totalSolved:42,totalWrong:11,streak:5,zenPoints:4200,isPlaceholder:true},
+  {playerName:"Sayoni",mapName:"logic",totalSolved:37,totalWrong:9,streak:4,zenPoints:3700,isPlaceholder:true},
+  {playerName:"Abhinay",mapName:"python",totalSolved:31,totalWrong:13,streak:3,zenPoints:3100,isPlaceholder:true},
+  {playerName:"Manus",mapName:"loops",totalSolved:26,totalWrong:8,streak:6,zenPoints:2600,isPlaceholder:true}
+];
+const MAP_ICONS = {python:"🐍",logic:"🧩",loops:"🔁",arrays:"📦",functions:"⚙️",all:"🕹️"};
+let latestAnalytics = null;
+let isLive = false;
+let currentMap = "all";
+let toastTimer = null;
+
+function esc(value){return String(value ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function status(label,live){
+  const el=document.getElementById("apiStatus");
+  el.textContent=label;
+  el.classList.toggle("sample",!live);
+}
+function toast(message){
+  const el=document.getElementById("toast");
+  el.textContent=message;el.classList.add("show");
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),2100);
+}
+function setMetric(id,value){document.getElementById(id).textContent=value;}
+function formatNum(value){return Number(value||0).toLocaleString();}
+async function fetchAnalytics(){
+  const r=await fetch(`${API_BASE}/analytics`);
+  if(!r.ok)throw new Error(`/analytics returned ${r.status}`);
+  return r.json();
+}
+async function fetchLeaderboard(map){
+  const r=await fetch(`${API_BASE}/leaderboard/${encodeURIComponent(map)}`);
+  if(!r.ok)throw new Error(`/leaderboard/${map} returned ${r.status}`);
+  return r.json();
+}
+function normalisePlayer(p){
+  const name=p.playerName||p.player?.name||(p.playerId!=null?`Player #${p.playerId}`:"Unknown");
+  return {...p,playerName:name,isPlaceholder:!!p.isPlaceholder};
+}
+function mergePlayers(live,samples){
+  const seen=new Set(live.map(p=>`${String(p.playerName||p.player?.name||"").toLowerCase()}|${String(p.mapName||"").toLowerCase()}`));
+  const extras=samples.filter(p=>!seen.has(`${p.playerName.toLowerCase()}|${p.mapName.toLowerCase()}`));
+  return [...live.map(normalisePlayer),...extras.map(normalisePlayer)];
+}
+function avatarClass(name){const styles=["green","purple","orange","blue"];let n=0;for(let i=0;i<name.length;i++)n+=name.charCodeAt(i);return styles[n%styles.length];}
+
+function renderMetrics(data,live){
+  const d=data||DEMO_METRICS;
+  const players=Number(d.totalPlayers??DEMO_METRICS.totalPlayers);
+  const attempts=Number(d.totalAttempts??DEMO_METRICS.totalAttempts);
+  const correct=Number(d.correctAttempts??DEMO_METRICS.correctAttempts);
+  const wrong=Number(d.wrongAttempts??Math.max(0,attempts-correct));
+  const rate=d.successRate??(attempts?`${(correct/attempts*100).toFixed(1)}%`:"0%");
+  setMetric("players",formatNum(players));
+  setMetric("submissions",formatNum(attempts));
+  setMetric("solved",formatNum(correct));
+  setMetric("rate",typeof rate==="number"?`${rate}%`:rate);
+  setMetric("correctValue",formatNum(correct));
+  setMetric("wrongValue",formatNum(wrong));
+  setMetric("totalFoot",formatNum(attempts));
+  const denom=Math.max(1,correct+wrong);
+  document.getElementById("correctBar").style.width=`${correct/denom*100}%`;
+  document.getElementById("wrongBar").style.width=`${wrong/denom*100}%`;
+  document.getElementById("playersNote").innerHTML=live?"<strong>LIVE</strong> player profiles":"<strong>DEMO</strong> sample profiles";
+  document.getElementById("submissionsNote").textContent=live?"All-time attempts from Prisma":"Sample total · not database data";
+  document.getElementById("solvedNote").textContent=live?"Correct attempts from Prisma":"Sample total · not database data";
+  document.getElementById("rateNote").textContent=live?"Correct / total attempts":"Illustrative success rate";
+  document.getElementById("playerLevel").textContent=live?`LVL ${String(Math.max(1,Math.floor(correct/100)+1)).padStart(2,"0")}`:"LVL 04";
+  const xp=live?(correct%100)*10:720;
+  document.getElementById("xpLabel").textContent=live?`${formatNum(xp)} / 1000 XP to next level`:"Demo profile · 720 / 1000 XP";
+  document.getElementById("xpFill").style.width=`${Math.min(100,xp/10)}%`;
+}
+function aggregateMaps(rows){
+  const map=new Map();
+  for(const row of rows||[]){
+    const key=String(row.mapName||"unknown").toLowerCase();
+    if(!map.has(key))map.set(key,{mapName:key,totalSolved:0,zenPoints:0,rows:0});
+    const cur=map.get(key);
+    cur.totalSolved+=Number(row.totalSolved||0);
+    cur.zenPoints+=Number(row.zenPoints||0);
+    cur.rows++;
+  }
+  return [...map.values()];
+}
+function renderMapCards(rows,live){
+  const real=aggregateMaps(rows||[]);
+  const keys=new Set(real.map(m=>m.mapName));
+  const maps=DEMO_MAPS.map(d=>{
+    const found=real.find(m=>m.mapName===d.mapName);
+    return found?{...d,...found,isPlaceholder:false}:{...d,isPlaceholder:true};
+  });
+  real.filter(m=>!maps.some(d=>d.mapName===m.mapName)).slice(0,2).forEach(m=>maps.push({...m,icon:MAP_ICONS[m.mapName]||"🧱",isPlaceholder:false}));
+  const grid=document.getElementById("mapGrid");
+  grid.innerHTML=`<button class="map-card ${currentMap==="all"?"active":""}" data-map="all"><div class="map-art">🕹️</div><div class="map-name">All Maps</div><div class="map-count">Overview</div><div class="map-mini"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></button>`+maps.map(m=>{
+    const count=Number(m.totalSolved||0);
+    const filled=Math.max(1,Math.min(4,Math.ceil(count/12)));
+    return `<button class="map-card ${currentMap===m.mapName?"active":""}" data-map="${esc(m.mapName)}" title="Filter leaderboard to ${esc(m.mapName)}">
+      <div class="map-art">${m.icon||"🧱"}</div><div class="map-name">${esc(m.description||m.mapName)}</div>
+      <div class="map-count">${count} cleared${m.isPlaceholder?' · DEMO':''}</div>
+      <div class="map-mini">${[1,2,3,4].map(n=>`<i class="${n<=filled?'on':''}"></i>`).join("")}</div></button>`;
+  }).join("");
+  grid.querySelectorAll("[data-map]").forEach(btn=>btn.addEventListener("click",()=>selectMap(btn.dataset.map)));
+  document.getElementById("mapDesc").textContent=live?"Solved count grouped by map · click any map":"Sample distribution until Prisma has map stats";
+}
+async function liveLeaderboard(map){
+  if(map!=="all")return fetchLeaderboard(map);
+  const dbMaps=aggregateMaps((latestAnalytics||{}).maps||[]).map(m=>m.mapName);
+  const candidates=[...new Set([...DEMO_MAPS.map(m=>m.mapName),...dbMaps])];
+  const results=await Promise.all(candidates.map(async m=>{
+    try{return await fetchLeaderboard(m);}catch{return [];}
+  }));
+  const all=results.flat().map(normalisePlayer);
+  const byPlayer=new Map();
+  for(const p of all){
+    const key=String(p.playerId??p.playerName).toLowerCase();
+    if(!byPlayer.has(key))byPlayer.set(key,{...p,mapName:"all maps",zenPoints:0,totalSolved:0,totalWrong:0,streak:0,isPlaceholder:false});
+    const aggregate=byPlayer.get(key);
+    aggregate.zenPoints+=Number(p.zenPoints||0);
+    aggregate.totalSolved+=Number(p.totalSolved||0);
+    aggregate.totalWrong+=Number(p.totalWrong||0);
+    aggregate.streak=Math.max(aggregate.streak,Number(p.streak||0));
+  }
+  return [...byPlayer.values()];
+}
+function renderLeaderboardRows(entries){
+  const body=document.getElementById("leaderboard");
+  const palette=["green","purple","orange","blue"];
+  if(!entries.length){
+    body.innerHTML='<tr><td colspan="7" class="muted">No recorded players yet. Showing demo players below.</td></tr>';
+    return;
+  }
+  const sorted=[...entries].sort((a,b)=>Number(b.zenPoints||0)-Number(a.zenPoints||0)).slice(0,10);
+  body.innerHTML=sorted.map((p,i)=>{
+    const name=p.playerName||p.player?.name||"Unknown";
+    const isSample=!!p.isPlaceholder;
+    const streak=Number(p.streak||0);
+    return `<tr tabindex="0" role="button" data-player-index="${i}" aria-label="View ${esc(name)} player card">
+      <td class="rank ${i===0?"top1":""}">${i===0?"♛":"#"+(i+1)}</td>
+      <td><div class="player"><div class="avatar ${avatarClass(name)}">${esc(name.slice(0,2).toUpperCase())}</div><span>${esc(name)}</span></div></td>
+      <td style="text-transform:capitalize">${esc(p.mapName||"unknown")}</td>
+      <td>${formatNum(p.totalSolved)}</td><td>${streak?`🔥 ${streak}`:"-"}</td>
+      <td class="points">${formatNum(p.zenPoints)}</td>
+      <td><span class="tag ${isSample?"sample":(streak<3?"mid":"")}">${isSample?"DEMO":(streak>=3?"LIVE":"DB")}</span></td>
+    </tr>`;
+  }).join("");
+  body.querySelectorAll("tr[data-player-index]").forEach((row,index)=>{
+    const open=()=>openPlayer(sorted[index]);
+    row.addEventListener("click",open);
+    row.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open();}});
+  });
+}
+async function renderLeaderboard(){
+  currentMap=document.getElementById("mapFilter")?.value||currentMap;
+  const desc=document.getElementById("leaderDesc");
+  desc.textContent=currentMap==="all"?"Global ranking · summed across maps":"Ranking for "+currentMap;
+  try{
+    let entries=isLive?await liveLeaderboard(currentMap):[];
+    const samples=DEMO_PLAYERS.filter(p=>currentMap==="all"||p.mapName===currentMap);
+    entries=mergePlayers(entries,samples);
+    // If this map has no real players, its small demo group remains visible.
+    renderLeaderboardRows(entries);
+    document.querySelectorAll(".filter").forEach(b=>b.classList.toggle("active",b.dataset.filter===currentMap));
+    document.querySelectorAll(".map-card").forEach(b=>b.classList.toggle("active",b.dataset.map===currentMap));
+  }catch(error){
+    const samples=DEMO_PLAYERS.filter(p=>currentMap==="all"||p.mapName===currentMap);
+    renderLeaderboardRows(samples);
+    status("SAMPLE MODE",false);
+  }
+}
+function selectMap(map){
+  currentMap=map;
+  const select=document.getElementById("mapFilter");
+  if(select)select.value=map;
+  renderLeaderboard();
+  document.getElementById("leaderboard").closest("section").scrollIntoView({behavior:"smooth",block:"start"});
+  toast(`${map==="all"?"All maps":map.toUpperCase()} selected`);
+}
+function openPlayer(p){
+  const name=p.playerName||p.player?.name||"Unknown";
+  const sample=!!p.isPlaceholder;
+  const avatar=document.getElementById("modalAvatar");
+  avatar.textContent=name.slice(0,2).toUpperCase();
+  avatar.className=`avatar modal-avatar ${avatarClass(name)}`;
+  document.getElementById("modalName").textContent=name;
+  document.getElementById("modalMap").textContent=`${p.mapName||"Unknown map"} · ${sample?"DEMO PROFILE":"DATABASE PROFILE"}`;
+  document.getElementById("modalPoints").textContent=formatNum(p.zenPoints);
+  document.getElementById("modalSolved").textContent=formatNum(p.totalSolved);
+  document.getElementById("modalStreak").textContent=formatNum(p.streak);
+  document.getElementById("modalHint").textContent=sample?"Placeholder profile for preview only. This person has not been added to your Prisma database.":"These stats were loaded from the current leaderboard API.";
+  document.getElementById("playerModal").classList.add("show");
+}
+function closeModal(){document.getElementById("playerModal").classList.remove("show");}
+async function loadDashboard(){
+  const button=document.getElementById("refreshBtn");
+  button.disabled=true;button.textContent="⟳ SYNCING...";
+  try{
+    const data=await fetchAnalytics();
+    latestAnalytics=data;isLive=true;status("API CONNECTED",true);
+    renderMetrics(data,true);
+    renderMapCards(data.maps||[],true);
+    document.getElementById("heroCopy").textContent="Database connected. Your all-time stats are loaded. Pick a map, inspect a coder, and keep the streak going.";
+    document.getElementById("sampleNote").textContent="Rows tagged DEMO are placeholders and are not stored in Prisma. Rows tagged LIVE / DB came from your Express API.";
+    await renderLeaderboard();
+    toast("Save file synced ✓");
+  }catch(error){
+    latestAnalytics=null;isLive=false;status("DEMO MODE",false);
+    renderMetrics(DEMO_METRICS,false);
+    renderMapCards([],false);
+    document.getElementById("heroCopy").textContent="Preview mode is on. Sample stats and your requested demo players make the dashboard usable before the API is running.";
+    document.getElementById("sampleNote").textContent="DEMO players and totals are placeholders only. Start node server.js to load real Prisma stats.";
+    await renderLeaderboard();
+    toast("API offline · loaded demo data");
+  }finally{
+    button.disabled=false;button.textContent="↻ SYNC DATA";
+  }
+}
+document.getElementById("refreshBtn").addEventListener("click",loadDashboard);
+document.getElementById("filters").addEventListener("click",e=>{
+  const button=e.target.closest("[data-filter]");
+  if(!button)return;
+  currentMap=button.dataset.filter;
+  renderLeaderboard();
+  document.getElementById("leaderboard").scrollIntoView({behavior:"smooth",block:"start"});
+});
+document.getElementById("modalClose").addEventListener("click",closeModal);
+document.getElementById("playerModal").addEventListener("click",e=>{if(e.target.id==="playerModal")closeModal();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
+document.addEventListener("DOMContentLoaded",()=>{const mapFilter=document.getElementById("mapFilter");if(mapFilter)mapFilter.addEventListener("change",()=>selectMap(mapFilter.value));});
+loadDashboard();
+</script>
+</body>
+</html>

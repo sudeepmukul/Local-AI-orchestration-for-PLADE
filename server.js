@@ -202,6 +202,106 @@ app.get("/stats/:playerId/:map", async (req, res) => {
   });
 });
 
+/* ---------------- ANALYTICS DASHBOARD ---------------- */
+app.get("/analytics", async (req, res) => {
+  try {
+    const [
+      totalPlayers,
+      totalAttempts,
+      correctAttempts,
+      wrongAttempts,
+      mapStats
+    ] = await Promise.all([
+      prisma.player.count(),
+
+      prisma.attempt.count(),
+
+      prisma.attempt.count({
+        where: { result: "correct" }
+      }),
+
+      prisma.attempt.count({
+        where: { result: "wrong" }
+      }),
+
+      prisma.playerMapStats.findMany({
+        orderBy: { zenPoints: "desc" }
+      })
+    ]);
+
+    const successRate =
+      totalAttempts === 0
+        ? 0
+        : Number(
+            ((correctAttempts / totalAttempts) * 100).toFixed(2)
+          );
+
+    const totalZenPoints = mapStats.reduce(
+      (sum, stat) => sum + stat.zenPoints,
+      0
+    );
+
+    res.json({
+      totalPlayers,
+      totalAttempts,
+      correctAttempts,
+      wrongAttempts,
+      successRate: `${successRate}%`,
+      totalZenPoints,
+      maps: mapStats
+    });
+
+  } catch (err) {
+    console.error("Analytics error:", err.message);
+    res.status(500).json({
+      error: "Failed to fetch analytics"
+    });
+  }
+});
+
+/* ---------------- LEADERBOARD (PER MAP) ---------------- */
+app.get("/leaderboard/:map", async (req, res) => {
+  try {
+    const mapName = req.params.map;
+
+    const leaderboard = await prisma.playerMapStats.findMany({
+      where: { mapName },
+      orderBy: [
+        { zenPoints: "desc" },
+        { totalSolved: "desc" }
+      ],
+      take: 10,
+      include: {
+        player: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
+      }
+    });
+
+    res.json(
+      leaderboard.map((entry, index) => ({
+        rank: index + 1,
+        playerId: entry.playerId,
+        playerName: entry.player?.name ?? "Unknown Player",
+        mapName: entry.mapName,
+        zenPoints: entry.zenPoints,
+        totalSolved: entry.totalSolved,
+        totalWrong: entry.totalWrong,
+        streak: entry.streak
+      }))
+    );
+
+  } catch (err) {
+    console.error("Leaderboard error:", err.message);
+    res.status(500).json({
+      error: "Failed to fetch leaderboard"
+    });
+  }
+});
+
 /* ---------------- TEST ---------------- */
 app.get("/test", async (req, res) => {
   const players = await prisma.player.findMany();

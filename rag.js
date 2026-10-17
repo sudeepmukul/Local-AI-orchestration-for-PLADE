@@ -2,7 +2,7 @@ const axios = require("axios");
 
 let knowledge = [];
 
-// 🔥 Add knowledge
+// Add knowledge
 async function addKnowledge(text) {
   const res = await axios.post("http://localhost:11434/api/embeddings", {
     model: "nomic-embed-text",
@@ -15,7 +15,7 @@ async function addKnowledge(text) {
   });
 }
 
-// 🧠 Cosine similarity
+// Cosine similarity
 function cosineSimilarity(a, b) {
   const dot = a.reduce((sum, val, i) => sum + val * b[i], 0);
   const magA = Math.sqrt(a.reduce((sum, val) => sum + val * val, 0));
@@ -23,7 +23,7 @@ function cosineSimilarity(a, b) {
   return dot / (magA * magB);
 }
 
-// 🔍 Get context
+// Get context
 async function getContext(query) {
   const res = await axios.post("http://localhost:11434/api/embeddings", {
     model: "nomic-embed-text",
