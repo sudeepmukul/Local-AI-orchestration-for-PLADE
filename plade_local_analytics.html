@@ -137,6 +137,68 @@ tbody tr:last-child td{border-bottom:0}
 @media(max-width:900px){.wrap{padding:16px}.hero{grid-template-columns:1fr}.hero-side{min-height:105px}.columns{grid-template-columns:1fr}.map-grid{grid-template-columns:repeat(5,minmax(110px,1fr));overflow-x:auto;padding-bottom:5px}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.top{align-items:flex-start;flex-direction:column}.top-actions{justify-content:flex-start}.hero-main{padding:16px}.metrics{gap:8px}.metric{padding:12px}.metric-value{font-size:25px}.lower{grid-template-columns:1fr}.filters{justify-content:flex-start}.map-grid{grid-template-columns:repeat(5,105px)}.card{padding:13px}.hero-side{padding:13px}.footer{flex-direction:column}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+/* ===== QUEST COMPASS (agentic) ===== */
+.quest-wrap{margin-bottom:14px}
+.quest-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.quest-controls select,.quest-controls button{font:inherit}
+.qselect,.qbtn{border:2px solid var(--line);background:var(--panel2);color:var(--ink);padding:8px 11px;font-size:11px;font-weight:bold;box-shadow:3px 3px 0 var(--shadow)}
+.qbtn{cursor:pointer}
+.qbtn:hover{border-color:var(--mint);transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--shadow)}
+.qbtn.primary{background:var(--mint);color:#10170a;border-color:var(--mint)}
+.qbtn:disabled{opacity:.6;cursor:wait;transform:none}
+.qtheme-toggle{display:flex;border:2px solid var(--line);overflow:hidden}
+.qtheme-toggle button{border:0;background:var(--panel2);color:var(--muted);padding:8px 12px;font-size:10px;font-weight:bold}
+.qtheme-toggle button.active{background:var(--mint);color:#10170a}
+.agent-log{background:#06090f;border:2px solid #303c54;padding:10px 12px;font-size:10px;color:var(--mint);min-height:60px;max-height:160px;overflow:auto;margin-bottom:12px;font-family:inherit}
+.agent-log .step{padding:2px 0;border-bottom:1px dashed #1a2333}
+.agent-log .step:last-child{border-bottom:0}
+.agent-log .ok{color:var(--mint)}
+.agent-log .warn{color:var(--gold)}
+.agent-log .info{color:var(--cyan)}
+.quest-status{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.qchip{border:1px solid #355b3c;color:var(--mint);background:#18271b;padding:4px 7px;font-size:9px;font-weight:bold}
+.qchip.locked{border-color:#5d4b2b;color:var(--gold);background:#2b2314}
+.qchip.done{border-color:#3b4b60;color:var(--cyan);background:#101624}
+.roadmap{display:grid;gap:10px}
+.qstage{border:2px solid #334058;background:#101624;padding:12px;position:relative;box-shadow:2px 2px 0 var(--shadow);transition:transform .12s,border-color .12s}
+.qstage:hover{transform:translateY(-2px);border-color:var(--cyan)}
+.qstage.locked{opacity:.55;filter:grayscale(.5)}
+.qstage.current{border-color:var(--mint);background:#1a2a20}
+.qstage.done{border-color:#3b4b60;opacity:.8}
+.qstage-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.qstage-title{font-size:12px;font-weight:bold;text-transform:uppercase}
+.qstage-badge{font-size:9px;padding:3px 6px;border:1px solid #355b3c;color:var(--mint);background:#18271b}
+.qstage-badge.locked{border-color:#5d4b2b;color:var(--gold);background:#2b2314}
+.qstage-badge.done{border-color:#3b4b60;color:var(--cyan);background:#101624}
+.qstage-goal{font-size:10px;color:var(--muted);margin-bottom:8px;font-style:italic}
+.qstage-note{font-size:11px;line-height:1.5;margin-bottom:10px}
+.qstage-actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.qvideo-embed{width:100%;aspect-ratio:16/9;border:2px solid #303c54;background:#000;margin-top:10px;display:none}
+.qvideo-embed.show{display:block}
+.qtopic-list{display:grid;gap:6px;margin-top:8px}
+.qtopic{display:flex;align-items:center;gap:8px;padding:7px 9px;border:1px solid #303c54;background:#0e1420;font-size:11px}
+.qtopic input{accent-color:var(--mint)}
+.qtopic.done{text-decoration:line-through;opacity:.6}
+.qunlock{font-size:10px;color:var(--gold);margin-top:8px;padding:6px 8px;border:1px dashed #5d4b2b;background:#211c12}
+.qstats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.qstat{background:var(--panel2);border:2px solid var(--line);padding:10px;text-align:center;box-shadow:2px 2px 0 var(--shadow)}
+.qstat .n{font-size:26px;font-weight:900;color:var(--mint)}
+.qstat .l{font-size:11px;color:var(--muted);text-transform:uppercase;margin-top:4px}
+.qstat{padding:14px}
+.qstage{padding:16px}
+.qstage-title{font-size:14px}
+.qstage-goal{font-size:11px}
+.qstage-note{font-size:12px;line-height:1.6}
+.qvideo-embed{min-height:260px}
+@media(max-width:900px){.qstats{grid-template-columns:repeat(2,1fr)}}
+/* ===== TOP NAV ===== */
+.topnav{display:flex;gap:0;margin:0 0 18px;border:2px solid var(--line);background:var(--panel);box-shadow:4px 4px 0 var(--shadow);overflow:hidden}
+.topnav button{flex:1;border:0;background:var(--panel2);color:var(--muted);padding:14px 18px;font-size:13px;font-weight:900;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .12s}
+.topnav button:hover{color:var(--ink);background:#1d2740}
+.topnav button.active{background:var(--mint);color:#10170a}
+.topnav button .ic{margin-right:8px}
+.view{display:none}
+.view.active{display:block}
 </style>
 </head>
 <body>
@@ -156,6 +218,12 @@ tbody tr:last-child td{border-bottom:0}
     </div>
   </header>
 
+  <nav class="topnav">
+    <button id="navAnalytic" class="active" onclick="showView('analytic')"><span class="ic">📊</span>Analytic</button>
+    <button id="navZen" onclick="showView('zen')"><span class="ic">🧭</span>ZenAgent</button>
+  </nav>
+
+  <div id="viewAnalytic" class="view active">
   <section class="hero">
     <div class="hero-main">
       <span class="hero-tag">▸ MISSION CONTROL</span>
@@ -240,7 +308,49 @@ tbody tr:last-child td{border-bottom:0}
       <div class="quest"><div class="quest-icon">★</div><div><div class="quest-name">Manus unlocked a 6-win streak</div><div class="quest-desc">Loops map · demo event</div></div><div class="quest-xp">+150 XP</div></div>
     </div>
   </section>
-  <footer class="footer"><span>PLADE PLAYER HQ · LOCAL PROTOTYPE</span><span>SQLite via Prisma API · sample records are visual placeholders</span></footer>
+  </div><!-- /viewAnalytic -->
+
+  <div id="viewZen" class="view">
+  <div class="section-label">🧭 Quest compass <span class="muted">/ AGENTIC LEARNING PATH</span></div>
+  <section class="card quest-wrap">
+    <div class="cardhead">
+      <div><div class="cardtitle">🧭 Agentic quest forge</div><div class="carddesc">Real AI agent reads your Prisma stats → analyzes → plans a themed path with videos, notes & unlock gates</div></div>
+      <span class="chip">LIVE AGENT</span>
+    </div>
+
+    <div class="quest-controls">
+      <select id="qPlayer" class="qselect"><option value="">Select a coder…</option></select>
+      <div class="qtheme-toggle">
+        <button id="qThemeMedieval" class="active" type="button" onclick="setQuestTheme('medieval')">🏰 Medieval</button>
+        <button id="qThemeSpace" type="button" onclick="setQuestTheme('space')">🚀 Space</button>
+      </div>
+      <button class="qbtn primary" id="qForgeBtn" type="button" onclick="forgeQuest()">🧭 FORGE PATH</button>
+      <button class="qbtn" type="button" onclick="syncQuestPlayers()">↻ SYNC PLAYERS</button>
+    </div>
+
+    <div class="agent-log" id="qAgentLog"><div class="step info">▸ Agent idle. Select a coder and forge a path.</div></div>
+
+    <div id="qContent" style="display:none">
+      <div class="qstats" id="qStats"></div>
+      <div class="quest-status" id="qStatusRow"></div>
+
+      <div class="section-label" style="margin-top:6px">🗺️ Themed roadmap <span class="muted">/ UNLOCK GATES</span></div>
+      <div class="roadmap" id="qRoadmap"></div>
+
+      <div class="section-label" style="margin-top:14px">🎬 Lesson videos <span class="muted">/ REAL YOUTUBE</span></div>
+      <div id="qVideos"></div>
+
+      <div class="section-label" style="margin-top:14px">📜 Sage notes <span class="muted">/ KEEP CLOSE</span></div>
+      <div id="qNotes"></div>
+
+      <div class="qunlock" id="qUnlockHint"></div>
+    </div>
+    <div id="qEmpty" style="text-align:center;padding:30px 10px;color:var(--muted);font-size:11px">No path forged yet. The agent needs a coder profile.</div>
+  </section>
+
+  </div><!-- /viewZen -->
+
+  <footer class="footer"><span>PLADE PLAYER HQ · LOCAL PROTOTYPE</span><span>SQLite via Prisma API · Quest Compass agent on :3001 · sample records are visual placeholders</span></footer>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -495,6 +605,299 @@ document.getElementById("modalClose").addEventListener("click",closeModal);
 document.getElementById("playerModal").addEventListener("click",e=>{if(e.target.id==="playerModal")closeModal();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
 document.addEventListener("DOMContentLoaded",()=>{const mapFilter=document.getElementById("mapFilter");if(mapFilter)mapFilter.addEventListener("change",()=>selectMap(mapFilter.value));});
+function showView(name){
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  const target = name==="zen" ? "viewZen" : "viewAnalytic";
+  document.getElementById(target).classList.add("active");
+  document.getElementById("navAnalytic").classList.toggle("active", name!=="zen");
+  document.getElementById("navZen").classList.toggle("active", name==="zen");
+  if(name==="zen") syncQuestPlayers();
+}
+/* ===================== QUEST COMPASS AGENT ===================== */
+const QUEST_API = "http://localhost:3001";
+const QUEST_STATE = { theme: "medieval", profile: null, plan: null, player: null };
+const UNLOCK_KEY = "plade_quest_unlocks";
+
+function qlog(msg, cls) {
+  const el = document.getElementById("qAgentLog");
+  const d = document.createElement("div");
+  d.className = "step " + (cls || "info");
+  d.textContent = "▸ " + msg;
+  el.appendChild(d);
+  el.scrollTop = el.scrollHeight;
+}
+function qclear() { document.getElementById("qAgentLog").innerHTML = ""; }
+
+function questStorage() {
+  try { return JSON.parse(localStorage.getItem(UNLOCK_KEY) || "{}"); } catch { return {}; }
+}
+function saveQuestStorage(o) { localStorage.setItem(UNLOCK_KEY, JSON.stringify(o)); }
+function stageKey(playerId, theme, stageId) { return `${playerId}|${theme}|${stageId}`; }
+function isStageDone(playerId, theme, stageId) {
+  return !!questStorage()[stageKey(playerId, theme, stageId)];
+}
+function markStageDone(playerId, theme, stageId) {
+  const o = questStorage(); o[stageKey(playerId, theme, stageId)] = true; saveQuestStorage(o);
+}
+
+function setQuestTheme(theme) {
+  QUEST_STATE.theme = theme;
+  document.getElementById("qThemeMedieval").classList.toggle("active", theme === "medieval");
+  document.getElementById("qThemeSpace").classList.toggle("active", theme === "space");
+}
+
+async function syncQuestPlayers() {
+  const sel = document.getElementById("qPlayer");
+  try {
+    const r = await fetch(`${QUEST_API}/api/players`);
+    const players = await r.json();
+    sel.innerHTML = '<option value="">Select a coder…</option>' + players.map(p =>
+      `<option value="${p.id}">${p.name} (ID ${p.id}) · ${p.accuracy}% acc · ${p.zenPoints} zen</option>`).join("");
+    qlog(`Synced ${players.length} coders from Prisma DB ✔`, "ok");
+  } catch (e) {
+    // fallback to demo players from analytics leaderboard
+    const opts = (latestAnalytics ? [] : DEMO_PLAYERS).map((p, i) =>
+      `<option value="demo-${i}">${p.playerName} (demo) · ${p.totalSolved} solved</option>`).join("");
+    sel.innerHTML = '<option value="">Select a coder…</option>' + opts;
+    qlog("Quest server offline on :3001 — using demo coders. Start quest-compass-server.js for live data.", "warn");
+  }
+}
+
+async function gatherProfile(playerId) {
+  if (String(playerId).startsWith("demo-")) {
+    const idx = parseInt(playerId.split("-")[1]);
+    const p = DEMO_PLAYERS[idx];
+    return {
+      player: { id: 900 + idx, name: p.playerName, zenPoints: p.zenPoints, totalSolved: p.totalSolved, totalWrong: p.totalWrong, bestStreak: p.streak, joined: new Date().toISOString() },
+      maps: [{ mapName: p.mapName, zenPoints: p.zenPoints, totalSolved: p.totalSolved, totalWrong: p.totalWrong, streak: p.streak }],
+      analysis: {
+        totalAttempts: p.totalSolved + p.totalWrong,
+        correctCount: p.totalSolved,
+        wrongCount: p.totalWrong,
+        accuracy: p.totalSolved + p.totalWrong === 0 ? 0 : Math.round(p.totalSolved / (p.totalSolved + p.totalWrong) * 100),
+        recentRate: null, prevRate: null, trend: "unknown", longestWrongRun: 0,
+        wrongQuestions: [], lastActive: new Date().toISOString()
+      }
+    };
+  }
+  const r = await fetch(`${QUEST_API}/api/profile/${playerId}`, { cache: "no-store" });
+  if (!r.ok) throw new Error("profile fetch failed");
+  return r.json();
+}
+
+function analyzeProfile(profile) {
+  const a = profile.analysis;
+  const accuracy = a.accuracy;
+  const level = accuracy >= 80 ? "elite" : accuracy >= 60 ? "intermediate" : accuracy >= 40 ? "apprentice" : "beginner";
+  const strength = accuracy >= 60 ? "solid accuracy — push for speed" : accuracy >= 40 ? "foundations forming — fix recurring mistakes" : "needs fundamentals drill";
+  const weak = (a.wrongQuestions || []).slice(0, 3);
+  const trend = a.trend || "unknown";
+  return { level, strength, weak, trend, accuracy };
+}
+
+async function forgeQuest() {
+  const sel = document.getElementById("qPlayer");
+  const playerId = sel.value;
+  if (!playerId) { toast("Select a coder first"); return; }
+  const btn = document.getElementById("qForgeBtn");
+  btn.disabled = true; btn.textContent = "⏳ FORGING…";
+  qclear();
+  document.getElementById("qContent").style.display = "none";
+  document.getElementById("qEmpty").style.display = "none";
+
+  try {
+    qlog("STEP 1 · GATHER — reading player stats from Prisma DB", "info");
+    QUEST_STATE.profile = await gatherProfile(playerId);
+    const p = QUEST_STATE.profile;
+    qlog(`  → ${p.player.name}: ${p.analysis.totalAttempts} attempts, ${p.analysis.correctCount} correct, ${p.analysis.wrongCount} wrong`, "ok");
+
+    qlog("STEP 2 · ANALYZE — computing skill level & trends", "info");
+    const insight = analyzeProfile(p);
+    QUEST_STATE.insight = insight;
+    qlog(`  → accuracy ${insight.accuracy}% → level: ${insight.level.toUpperCase()} · trend: ${insight.trend}`, "ok");
+    if (insight.weak.length) qlog(`  → recurring weak spots: ${insight.weak.join(", ")}`, "warn");
+    if (p.analysis.longestWrongRun >= 5) qlog(`  → ⚠ longest wrong chain ${p.analysis.longestWrongRun} — hint sprint advised`, "warn");
+
+    qlog("STEP 3 · PLAN — invoking LLM agent for themed quest", "info");
+    let plan = null;
+    try {
+      const r = await fetch(`${QUEST_API}/api/quest/${playerId}/${QUEST_STATE.theme}`, { cache: "no-store" });
+      if (r.ok) plan = await r.json();
+    } catch (e) { /* fall through */ }
+    if (!plan) {
+      qlog("  → quest server offline → using local rule engine fallback", "warn");
+      plan = buildLocalPlan(p, QUEST_STATE.theme);
+    } else {
+      qlog(`  → agent generated ${plan.stages.length} stages (${plan.generatedBy})`, "ok");
+    }
+    QUEST_STATE.plan = plan;
+    QUEST_STATE.player = p;
+
+    qlog("STEP 4 · RENDER — drawing themed roadmap, videos, notes", "info");
+    renderQuest();
+    qlog("  → path ready. Complete stages to unlock the next gate.", "ok");
+  } catch (e) {
+    qlog("⚠ Agent error: " + e.message, "warn");
+    document.getElementById("qEmpty").style.display = "block";
+    document.getElementById("qEmpty").textContent = "Could not forge path. Make sure quest-compass-server.js is running on :3001.";
+  } finally {
+    btn.disabled = false; btn.textContent = "🧭 FORGE PATH";
+  }
+}
+
+/* local fallback planner (mirrors server logic) */
+const QUEST_NODES = {
+  print_basics: { title: "The print() Command", medieval: "Rune of Echoes — the print() Scroll", space: "Signal Beacon — the print() Transmission",
+    note: "print() sends output to the console. Every correct spell must contain print().",
+    check: "You can print any message or variable.", query: "python print function beginners tutorial", videoId: "kqtD5dpn9C8" },
+  lists: { title: "Lists", medieval: "The Inventory Satchel — Python Lists", space: "Cargo Bay — Python Lists",
+    note: "A list stores many values in order: [a, b, c]. Square brackets signal a list.",
+    check: "Create, read and modify list items.", query: "python lists tutorial beginners", videoId: "ohCDWZgNIU0" },
+  booleans: { title: "Booleans & Conditions", medieval: "Truth-Seer's Trial — True/False", space: "Dual-Core Logic — True/False",
+    note: "True and False drive decisions. Game checks for True/False literals.",
+    check: "Write conditions passing True/False.", query: "python booleans if statement beginners", videoId: "DZwmZ8Usvnk" },
+  loops: { title: "for Loops", medieval: "March of the Endless Legion — for Loops", space: "Orbital Cycle — for Loops",
+    note: "`for x in something:` repeats work per element. Game checks 'for' keyword.",
+    check: "Loop over a list and use each item.", query: "python for loop beginners tutorial", videoId: "6iF8Xb7Z3wQ" },
+  combining: { title: "Combining All Skills", medieval: "The Grand Gauntlet — Full Trial", space: "Docking Maneuver — Full System",
+    note: "Real quests need list + loop + booleans + print together.",
+    check: "Write one program using all four.", query: "python practice lists loops conditions print", videoId: "rfscVS0vtbw" },
+  consistency: { title: "Consistency & Streaks", medieval: "Squire Discipline — Daily Drills", space: "Mission Cadence — Daily Drills",
+    note: "Short frequent sessions beat marathon wrong-runs.",
+    check: "Play on several different days this week.", query: "coding habit streak consistency tips", videoId: "rfscVS0vtbw" },
+  speed: { title: "Speed & Confidence", medieval: "Duel Reflexes — Thinking Fast", space: "Launch Window — Thinking Fast",
+    note: "Lower time per attempt via pattern recognition, not rushing.",
+    check: "Average solve time drops while accuracy stays high.", query: "coding problem solving faster tips", videoId: "rfscVS0vtbw" }
+};
+const LEVEL_ORDER = {
+  beginner: ["print_basics","lists","booleans","loops","combining","consistency"],
+  apprentice: ["lists","booleans","loops","combining","consistency","speed"],
+  intermediate: ["loops","booleans","combining","consistency","speed"],
+  elite: ["combining","consistency","speed"]
+};
+function buildLocalPlan(profile, theme) {
+  const a = profile.analysis;
+  const accuracy = a.accuracy;
+  const level = accuracy >= 80 ? "elite" : accuracy >= 60 ? "intermediate" : accuracy >= 40 ? "apprentice" : "beginner";
+  const ids = LEVEL_ORDER[level];
+  const flavor = theme === "medieval"
+    ? { world: "The Kingdom of Zenhold", intro: `Hail, ${profile.player.name}! accuracy ${accuracy}% of gauntlet trials attempted.`, motivation: "Every wrong attempt is a shield arrow — learn its arc." }
+    : { world: "Sector Zen-7: The Nebula Frontier", intro: `Navigator ${profile.player.name}, accuracy ${accuracy}% of mission simulations.`, motivation: "Failed simulations are engine burns — each pushes you further." };
+  return {
+    theme, level, world: flavor.world, intro: flavor.intro, motivation: flavor.motivation,
+    generatedBy: "local-rule-engine",
+    captainTip: theme === "medieval" ? "The wise practice daily — even ten lines a day forges mastery." : "Mission Control advises small daily flight sims.",
+    stages: ids.map((id, i) => ({
+      order: i + 1, id, status: i === 0 ? "current" : "locked",
+      title: QUEST_NODES[id][theme === "medieval" ? "medieval" : "space"],
+      skill: QUEST_NODES[id].title,
+      goal: "Master: " + QUEST_NODES[id].check,
+      note: QUEST_NODES[id].note,
+      check: QUEST_NODES[id].check,
+      query: QUEST_NODES[id].query,
+      videoId: QUEST_NODES[id].videoId,
+      xpGate: i * 150
+    }))
+  };
+}
+
+function getVideoId(s) {
+  return s.videoId || (s.video && s.video.id) || null;
+}
+function renderQuest() {
+  const plan = QUEST_STATE.plan, p = QUEST_STATE.player, theme = QUEST_STATE.theme;
+  const playerId = p.player.id;
+  const insight = QUEST_STATE.insight;
+  document.getElementById("qContent").style.display = "block";
+  document.getElementById("qEmpty").style.display = "none";
+
+  // stats
+  document.getElementById("qStats").innerHTML = [
+    ["Level", insight.level.toUpperCase()], ["Accuracy", insight.accuracy + "%"],
+    ["Zen Points", p.player.zenPoints], ["Streak", p.maps[0] ? p.maps[0].streak : 0]
+  ].map(([l, v]) => `<div class="qstat"><div class="n">${v}</div><div class="l">${l}</div></div>`).join("");
+
+  // status chips
+  const chips = [];
+  chips.push(`<span class="qchip">${theme === "medieval" ? "🏰 Medieval" : "🚀 Space"} world: ${plan.world}</span>`);
+  chips.push(`<span class="qchip ${insight.trend === "declining" ? "locked" : ""}">Trend: ${insight.trend}</span>`);
+  if (p.analysis.longestWrongRun >= 5) chips.push(`<span class="qchip locked">⚠ Wrong chain ${p.analysis.longestWrongRun}</span>`);
+  document.getElementById("qStatusRow").innerHTML = chips.join("");
+
+  // roadmap — ALL OPEN, no locking
+  const origin = (location.origin && location.origin !== "null") ? location.origin : "";
+  const originParam = origin ? "?origin=" + encodeURIComponent(origin) : "";
+  const roadmap = document.getElementById("qRoadmap");
+  roadmap.innerHTML = plan.stages.map((s, i) => {
+    const done = isStageDone(playerId, theme, s.id);
+    const vid = getVideoId(s);
+    const embedSrc = vid ? `https://www.youtube.com/embed/${vid}${originParam}` : `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(s.query || s.skill)}${originParam}`;
+    const cls = done ? "done" : "open";
+    const badge = done ? "✔ DONE" : "▶ OPEN";
+    const badgeCls = done ? "done" : "";
+    return `<div class="qstage ${cls}">
+      <div class="qstage-head">
+        <div class="qstage-title">STAGE ${s.order} · ${s.title}</div>
+        <span class="qstage-badge ${badgeCls}">${badge}</span>
+      </div>
+      <div class="qstage-goal">🎯 ${s.goal}</div>
+      <div class="qstage-note">${s.note}</div>
+      <div class="qstage-actions">
+        <button class="qbtn" type="button" onclick="toggleStageVideo(${i})">▶ Watch Lesson</button>
+        <a class="qbtn" style="text-decoration:none" href="${s.video ? s.video.url : 'https://www.youtube.com/results?search_query=' + encodeURIComponent(s.query || s.skill)}" target="_blank">🔎 More on YT</a>
+        ${!done ? `<button class="qbtn primary" type="button" onclick="completeStage(${i})">✔ Mark Complete</button>` : `<span class="qchip done">✔ Completed</span>`}
+      </div>
+      <iframe class="qvideo-embed" id="qvid-${i}" src="${embedSrc}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" referrerpolicy="origin"></iframe>
+    </div>`;
+  }).join("");
+
+  // videos section: embed every stage (all open)
+  const vids = document.getElementById("qVideos");
+  vids.innerHTML = plan.stages.map((s, i) => {
+    const vid = getVideoId(s);
+    const embedSrc = vid ? `https://www.youtube.com/embed/${vid}${originParam}` : `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(s.query || s.skill)}${originParam}`;
+    return `<div class="card" style="margin-bottom:14px;padding:16px">
+      <div class="cardhead"><div><div class="cardtitle" style="font-size:14px">🎬 ${s.title}</div><div class="carddesc" style="font-size:11px;margin-top:4px">${s.skill} · ${s.check}</div></div><span class="chip">REAL YT</span></div>
+      <iframe class="qvideo-embed show" src="${embedSrc}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" referrerpolicy="origin" style="height:360px"></iframe>
+      <div style="margin-top:10px;text-align:center"><a class="qbtn primary" style="text-decoration:none;display:inline-block" href="${s.video ? s.video.url : 'https://www.youtube.com/results?search_query=' + encodeURIComponent(s.query || s.skill)}" target="_blank">▶ Open on YouTube (guaranteed play)</a></div>
+    </div>`;
+  }).join("");
+
+  // notes
+  document.getElementById("qNotes").innerHTML = plan.stages.map((s, i) =>
+    `<div class="notecard" style="background:var(--panel2);border:2px solid #334058;padding:12px;margin-bottom:10px">
+       <b style="color:var(--mint);font-size:12px">${theme === "medieval" ? "📜" : "💾"} Stage ${i + 1} — ${s.skill}:</b>
+       <div style="font-size:11px;margin-top:4px">${s.check}</div>
+       <div style="font-size:10px;color:var(--muted);margin-top:4px">${s.note}</div>
+     </div>`).join("") + (plan.captainTip ? `<div class="tip" style="border-left:4px solid var(--mint);padding:10px 14px;background:#18271b;font-size:12px;margin-top:10px">${plan.captainTip}</div>` : "");
+
+  // completion summary (no locking)
+  const doneCount = plan.stages.filter(s => isStageDone(playerId, theme, s.id)).length;
+  document.getElementById("qUnlockHint").textContent =
+    `✅ ${doneCount}/${plan.stages.length} stages complete. All paths are open — play more games to raise Zen Points and earn mastery!`;
+}
+
+function toggleStageVideo(i) {
+  const el = document.getElementById(`qvid-${i}`);
+  if (!el) return;
+  el.classList.toggle("show");
+}
+
+function completeStage(i) {
+  const plan = QUEST_STATE.plan, p = QUEST_STATE.player, theme = QUEST_STATE.theme;
+  const s = plan.stages[i];
+  markStageDone(p.player.id, theme, s.id);
+  toast(`✔ Stage ${s.order} complete!`);
+  renderQuest();
+}
+
+/* auto-sync quest players when dashboard loads */
+const _origLoad = loadDashboard;
+loadDashboard = async function () {
+  await _origLoad();
+  syncQuestPlayers();
+};
+
 loadDashboard();
 </script>
 </body>

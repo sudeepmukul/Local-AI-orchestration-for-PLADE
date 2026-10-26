@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧭 Quest Compass — Agentic Learning Path</title>
+<style>
+  :root {
+    /* medieval is default; JS swaps for space */
+    --bg1:#1a0f08; --bg2:#2e1a0a; --panel:#f4e8d0; --panel2:#e8d5b0;
+    --ink:#3a2410; --gold:#d4a017; --accent:#a0522d; --ok:#2d6a2d; --bad:#8b2020;
+    --current:#d4a017; --locked:#b0a080; --banner1:#3a2410; --banner2:#7a4a12;
+    --font:", Georgia, 'Times New Roman', serif;
+  }
+  body.space {
+    --bg1:#050514; --bg2:#0d1040; --panel:#e8ecff; --panel2:#c8d2ff;
+    --ink:#14182e; --gold:#00d4ff; --accent:#5533cc; --ok:#0d8a5a; --bad:#c04040;
+    --current:#00d4ff; --locked:#8890b8; --banner1:#05041a; --banner2:#332298;
+    --font:", 'Segoe UI', Verdana, sans-serif;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    font-family: var(--font);
+    background: radial-gradient(ellipse at top, var(--bg2) 0%, var(--bg1) 70%);
+    min-height:100vh; color:var(--ink);
+    transition: background 0.8s;
+  }
+  .wrap { max-width:1000px; margin:0 auto; padding:24px 16px 60px; }
+
+  /* ---- header ---- */
+  header { text-align:center; padding:34px 16px 26px; color:var(--panel); }
+  .crest { font-size:52px; line-height:1; }
+  h1 { font-size:34px; letter-spacing:2px; margin:10px 0 4px; color:var(--gold); text-shadow:0 2px 8px rgba(0,0,0,.6); }
+  .sub { opacity:.85; font-size:14px; letter-spacing:1px; }
+  .worldline { margin-top:12px; font-size:16px; font-style:italic; color:var(--current); }
+
+  /* ---- controls ---- */
+  .controls { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:10px 0 24px; }
+  select, button {
+    font-family:var(--font); font-size:15px; padding:10px 18px; border-radius:6px;
+    border:2px solid var(--gold); background:var(--panel); color:var(--ink);
+    cursor:pointer; font-weight:600; box-shadow:0 3px 10px rgba(0,0,0,.4);
+  }
+  button:hover, select:hover { transform:translateY(-2px); filter:brightness(1.08); }
+  button:disabled { opacity:.5; cursor:wait; transform:none; }
+  button.primary { background:var(--gold); color:#fff; }
+  body.space button.primary { color:#041020; }
+
+  /* ---- panels ---- */
+  .panel {
+    background:var(--panel); border-radius:12px; padding:22px;
+    box-shadow:0 6px 24px rgba(0,0,0,.5); margin-bottom:22px;
+    border-top:5px solid var(--gold); position:relative; overflow:hidden;
+  }
+  .panel h2 { font-size:20px; margin-bottom:14px; color:var(--accent); letter-spacing:1px; }
+  .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px; }
+  .stat { background:var(--panel2); border-radius:10px; padding:14px 10px; text-align:center; }
+  .stat .num { font-size:26px; font-weight:800; }
+  .stat .lbl { font-size:12px; opacity:.75; margin-top:3px; }
+  .badge { display:inline-block; padding:3px 12px; border-radius:20px; font-size:12px; font-weight:700; color:#fff; }
+  .trend { margin-top:14px; font-size:14px; }
+  .tip { margin-top:14px; padding:10px 14px; border-left:4px solid var(--accent); background:rgba(0,0,0,.06); border-radius:0 8px 8px 0; font-size:14px; }
+  .genby { position:absolute; top:8px; right:14px; font-size:11px; opacity:.55; }
+
+  /* ---- roadmap ---- */
+  .roadmap { position:relative; padding-left:46px; }
+  .roadmap::before {
+    content:""; position:absolute; left:17px; top:12px; bottom:12px; width:4px;
+    background:linear-gradient(var(--gold), var(--locked)); border-radius:2px; opacity:.6;
+  }
+  .stage { position:relative; margin-bottom:22px; padding:16px 18px; border-radius:10px; background:var(--panel2); }
+  .stage::before {
+    content:"◆"; position:absolute; left:-38px; top:14px; font-size:18px; color:var(--current);
+  }
+  .stage.locked { opacity:.85; filter:grayscale(.55); }
+  .stage.locked::before { content:"🔒"; }
+  .stage.done::before { content:"✔"; color:var(--ok); }
+  .stage .ord { font-size:12px; font-weight:800; color:var(--accent); letter-spacing:2px; }
+  .stage h3 { font-size:17px; margin:3px 0 8px; }
+  .stage .goal { font-size:13px; font-style:italic; opacity:.9; margin-bottom:10px; }
+  .stage-actions { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  .btn-sm { font-size:13px; padding:7px 14px; border-radius:6px; border:1.5px solid var(--accent); background:var(--panel); color:var(--ink); cursor:pointer; font-weight:600; }
+  .btn-sm:hover { filter:brightness(1.08); }
+  .stagedone-btn { border-color:var(--ok); color:var(--ok); }
+
+  /* ---- video modal ---- */
+  .modal {
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,.8); z-index:50;
+    align-items:center; justify-content:center; padding:20px;
+  }
+  .modal.open { display:flex; }
+  .modal-box { background:var(--bg1); color:var(--panel); border-radius:14px; padding:20px; max-width:860px; width:100%; border:2px solid var(--gold); }
+  .modal-box h3 { color:var(--gold); margin-bottom:12px; }
+  iframe { width:100%; aspect-ratio:16/9; border:none; border-radius:8px; background:#000; }
+  .modal-links { margin-top:12px; display:flex; gap:14px; flex-wrap:wrap; }
+  .modal-links a { color:var(--current); }
+  .modal-close { float:right; cursor:pointer; font-size:20px; }
+
+  /* ---- notes ---- */
+  .notecard { background:var(--panel2); border-radius:10px; padding:14px 16px; margin-bottom:10px; font-size:14px; line-height:1.6; }
+  .notecard b { color:var(--accent); }
+
+  /* ---- empty / loading ---- */
+  .empty { text-align:center; padding:70px 20px; color:var(--panel); }
+  .empty .big { font-size:60px; }
+  .spinner { display:inline-block; width:42px; height:42px; border:5px solid rgba(255,255,255,.2); border-top-color:var(--gold); border-radius:50%; animation:spin 1s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  #agentLog { font-size:12px; font-family:Consolas, monospace; opacity:.8; margin-top:14px; text-align:left; max-width:480px; margin-left:auto; margin-right:auto; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="crest" id="crest">🛡️</div>
+  <h1>QUEST COMPASS</h1>
+  <div class="sub">Harness the game's verdicts — receive your personalized path</div>
+  <div class="worldline" id="worldline"></div>
+</header>
+
+<div class="wrap">
+  <div class="controls">
+    <select id="playerSel"><option value="">Loading students…</option></select>
+    <button id="themeBtn" class="primary" onclick="toggleTheme()">🏰 Medieval Theme</button>
+    <button onclick="forge()">🧭 Forge My Path</button>
+  </div>
+
+  <div class="empty" id="empty"><div class="big" id="emptyCrest">🏰</div><p>Select a student and forge their path.</p></div>
+  <div class="empty" id="loading" style="display:none">
+    <div class="spinner"></div>
+    <p style="margin-top:14px">The Agent is charting a course…</p>
+    <div id="agentLog"></div>
+  </div>
+
+  <div id="content" style="display:none">
+    <!-- performance -->
+    <div class="panel" id="profilePanel">
+      <h2 id="profileTitle">Performance Chronicle</h2>
+      <div class="stats" id="statsRow"></div>
+      <div class="trend" id="trendLine"></div>
+      <div class="tip" id="motivation"></div>
+      <span class="genby" id="genby"></span>
+    </div>
+
+    <!-- roadmap -->
+    <div class="panel" id="roadmapPanel">
+      <h2 id="roadmapTitle">The Grand Roadmap</h2>
+      <div class="roadmap" id="roadmapEl"></div>
+    </div>
+
+    <!-- notes -->
+    <div class="panel" id="notesPanel">
+      <h2>📜 Sage Notes — Keep These Close</h2>
+      <div id="notesEl"></div>
+    </div>
+  </div>
+</div>
+
+<!-- video modal -->
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <span class="modal-close" onclick="closeModal()">✕</span>
+    <h3 id="modalTitle"></h3>
+    <iframe id="modalFrame" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <div class="modal-links" id="modalLinks"></div>
+  </div>
+</div>
+
+<script>
+const state = { theme: "medieval", profile: null, plan: null };
+
+const THEMES = {
+  medieval: { crest:"🛡️", btn:"🏰 Medieval Theme", other:"🚀 Space Theme",
+    empty:"🏰", roadmapTitle:"⚔️ The Grand Roadmap",
+    profileTitle:"📜 Performance Chronicle" },
+  space: { crest:"🚀", btn:"🚀 Space Theme", other:"🏰 Medieval Theme",
+    empty:"🛸", roadmapTitle:"🌠 Flight Trajectory",
+    profileTitle:"📊 Mission Telemetry" }
+};
+
+function toggleTheme() {
+  state.theme = state.theme === "medieval" ? "space" : "medieval";
+  applyTheme();
+  if (state.profile && state.plan) forge(); else if (state.profile) renderProfileOnly();
+}
+function applyTheme() {
+  const t = THEMES[state.theme];
+  document.body.classList.toggle("space", state.theme === "space");
+  document.getElementById("crest").textContent = t.crest;
+  document.getElementById("themeBtn").textContent = t.other;
+  document.getElementById("emptyCrest").textContent = t.empty;
+}
+function log(msg) {
+  const el = document.getElementById("agentLog");
+  el.innerHTML += "▸ " + msg + "<br>";
+}
+
+async function loadPlayers() {
+  const sel = document.getElementById("playerSel");
+  try {
+    const res = await fetch("/api/players");
+    const players = await res.json();
+    sel.innerHTML = players.map(p =>
+      `<option value="${p.id}">🧑‍🎓 ${p.name} (ID ${p.id}) — ${p.accuracy}% acc · ${p.zenPoints} zen</option>`).join("");
+  } catch { sel.innerHTML = "<option>⚠️ Could not reach quest server</option>"; }
+}
+
+function selectPlayer(id) {
+  document.getElementById("playerSel").value = String(id);
+}
+
+document.getElementById("playerSel").addEventListener("change", e => {
+  hideAll();
+  if (e.target.value) loadProfileOnly();
+});
+
+function hideAll() {
+  document.getElementById("content").style.display = "none";
+  document.getElementById("loading").style.display = "none";
+  document.getElementById("empty").style.display = "none";
+}
+
+async function loadProfileOnly() {
+  hidePanels();
+  state.plan = null;
+  const id = getSel();
+  if (!id) return;
+  const res = await fetch("/api/profile/" + id);
+  state.profile = await res.json();
+  renderProfileOnly();
+}
+
+function getSel() { return document.getElementById("playerSel").value; }
+function hidePanels(){ document.getElementById("content").style.display="none"; document.getElementById("loading").style.display="none"; document.getElementById("empty").style.display= getSel() ? "none":"block"; }
+function showProfile(){ document.getElementById("empty").style.display="none"; document.getElementById("loading").style.display="none"; document.getElementById("content").style.display="block"; }
+
+function renderProfileOnly() {
+  const p = state.profile, t = THEMES[state.theme];
+  document.getElementById("profileTitle").textContent = t.profileTitle + ` — ${p.player.name}`;
+  const a = p.analysis;
+  document.getElementById("statsRow").innerHTML = [
+    ["Zen Points", p.player.zenPoints], ["Accuracy", a.accuracy + "%"],
+    ["Correct", a.correctCount], ["Wrong", a.wrongCount],
+    ["Current Streak", p.maps[0] ? p.maps[0].streak : 0],
+    ["Map", p.maps[0] ? p.maps[0].mapName : "—"]
+  ].map(([l,v]) => `<div class="stat"><div class="num">${v}</div><div class="lbl">${l}</div></div>`).join("");
+
+  const trendIcon = { improving:"📈", declining:"📉", steady:"➡️", unknown:"❓" }[a.trend];
+  const trendWord = { improving:"improving", declining:"needs attention", steady:"steady", unknown:"unknown" }[a.trend];
+  document.getElementById("trendLine").innerHTML =
+    `${trendIcon} Recent accuracy ${a.recentRate ?? "—"}% vs previous ${a.prevRate ?? "—"}% → <b>${trendWord}</b>` +
+    (a.longestWrongRun >= 5 ? ` · ⚠️ Longest wrong chain: ${a.longestWrongRun} (a hint-sprint is advised)` : "");
+
+  document.getElementById("motivation").textContent = state.plan ? state.plan.intro : p.player.name + "'s path will appear here — press 🧭 Forge My Path.";
+  document.getElementById("genby").textContent = state.plan ? "generated by " + state.plan.generatedBy : "";
+  showProfile();
+}
+
+/* ============ AGENTIC FORGE: gather → analyze → plan → render ============ */
+async function forge() {
+  const id = getSel();
+  if (!id) return;
+  document.getElementById("content").style.display = "none";
+  document.getElementById("empty").style.display = "none";
+  const loading = document.getElementById("loading");
+  const logEl = document.getElementById("agentLog");
+  loading.style.display = "block"; logEl.innerHTML = "";
+
+  const steps = ThemeSteps(state.theme);
+  let i = 0;
+  const stepper = setInterval(()=>{ if (i < steps.length) log(steps[i++]); }, 700);
+
+  try {
+    if (!state.profile) {
+      const res = await fetch("/api/profile/" + id);
+      state.profile = await res.json();
+    }
+    log("profile gathered ✔");
+    const res = await fetch(`/api/quest/${id}/${state.theme}`);
+    state.plan = await res.json();
+    log(state.plan.generatedBy === "local-rule-engine" ? "LLM offline → deterministic planner used ✔" : "LLM personalized the quest ✔");
+  } catch (e) {
+    log("⚠ error: " + e.message);
+  }
+  clearInterval(stepper);
+  loading.style.display = "none";
+  if (state.plan) { renderProfileOnly(); renderPlan(); } else { hidePanels(); }
+}
+
+function ThemeSteps(theme) {
+  return theme === "medieval"
+    ? ["Summoning the Grand Sage…", "Reading the student's battle chronicle…", "Weighing each gauntlet's verdict…", "Consulting the LLM oracle…", "Inscribing the path on the Compass…"]
+    : ["Mission Control online…", "Downloading telemetry…", "Analyzing simulation results…", "LLM co-pilot computing trajectory…", "Plotting flight path…"];
+}
+
+function renderPlan() {
+  const plan = state.plan, t = THEMES[state.theme];
+  document.getElementById("worldline").textContent = "World: " + plan.world;
+  document.getElementById("motivation").textContent = plan.intro + " — " + plan.motivation;
+  document.getElementById("genby").textContent = "generated by " + plan.generatedBy;
+  document.getElementById("roadmapTitle").textContent = t.roadmapTitle + ` (level: ${plan.level})`;
+
+  document.getElementById("roadmapEl").innerHTML = plan.stages.map((s, i) => {
+    const cls = s.status === "current" ? "" : "locked";
+    return `<div class="stage ${cls}">
+      <div class="ord">STAGE ${s.order} ${s.status === "current" ? "· CURRENT QUEST" : ""}</div>
+      <h3>${s.title}</h3>
+      <div class="goal">🎯 ${s.goal}</div>
+      <div style="font-size:14px; line-height:1.6; margin-bottom:10px">${s.note}</div>
+      <div class="stage-actions">
+        <button class="btn-sm" onclick="openVideo(${i})">▶ Watch Lesson</button>
+        ${s.video ? `<a class="btn-sm" style="text-decoration:none" href="${s.video.url}" target="_blank">🔎 Search More</a>` : ""}
+        <button class="btn-sm stagedone-btn" onclick="markDone(${i})">✔ Complete</button>
+      </div>
+    </div>`;
+  }).join("");
+
+  document.getElementById("notesEl").innerHTML =
+    plan.stages.map((s, i) =>
+      `<div class="notecard"><b>${state.theme === 'medieval' ? '📜' : '💾'} Stage ${i+1} — ${s.skill}:</b> ${s.check}</div>`
+    ).join("") + (plan.captainTip ? `<div class="tip">💡 <b>Sage's Tip:</b> ${plan.captainTip}</div>` : "");
+}
+
+function markDone(i) {
+  state.plan.stages[i].status = "done";
+  const nx = state.plan.stages.find(s => s.status !== "done");
+  if (nx) nx.status = "current";
+  renderPlan();
+  const btn = document.createElement("div");
+  btn.style.cssText = "text-align:center;margin-top:10px;font-weight:700;color:var(--ok)";
+  btn.textContent = "🎉 Stage complete! Keep the streak burning.";
+  document.getElementById("roadmapEl").appendChild(btn);
+}
+
+function openVideo(i) {
+  const s = state.plan.stages[i];
+  document.getElementById("modalTitle").textContent = "🎬 " + s.title;
+  const q = encodeURIComponent(s.video.title + " " + (state.plan.level) + " python");
+  const vid = (s.video && s.video.id) ? s.video.id : null;
+  const origin = (location.origin && location.origin !== "null") ? location.origin : "";
+  const originParam = origin ? "&origin=" + encodeURIComponent(origin) : "";
+  document.getElementById("modalFrame").src = vid ? "https://www.youtube.com/embed/" + vid + "?rel=0" + originParam : "https://www.youtube.com/embed?listType=search&list=" + q;
+  document.getElementById("modalLinks").innerHTML =
+    `<a href="${s.video.url}" target="_blank">🎥 Open search results page</a>
+     <a href="https://www.google.com/search?q=${q}" target="_blank">🌐 Google notes about this</a>`;
+  document.getElementById("modal").classList.add("open");
+}
+function closeModal() {
+  document.getElementById("modalFrame").src = "";
+  document.getElementById("modal").classList.remove("open");
+}
+
+applyTheme();
+loadPlayers();
+</script>
+</body>
+</html>
