@@ -331,4 +331,4 @@ For licensing or commercial inquiries, please contact the project owner.
 ---
 
 **PLADE Backend AI**  
-*The backend intelligence layer for a gamified programming learning experience.*
+*The backend intelligence layer for a gamified programming learning experience*
